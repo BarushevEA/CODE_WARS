@@ -1,10 +1,13 @@
 function main(n) {
-    const general = ((1 + n) / 2) * n;
+    const
+        general = Math.trunc(n * (1 + n) / 2),
+        bound = Math.trunc(Math.sqrt(general));
+
     let arr = [];
 
-    for (let a = n; a > 1; a--) {
-        const b = Math.trunc((general - a) / a);
-        if (general - b - a === b * a) arr.push([b, a]);
+    for (let first = n; first > bound; first--) {
+        const second = Math.trunc((general - first) / first);
+        if (general - second - first === second * first) arr.push([second, first]);
     }
 
     const size = arr.length;
@@ -14,13 +17,15 @@ function main(n) {
 }
 
 function example(n) {
-    let sum = n * (n + 1) / 2,
-        result = [];
-    for (let a = 1, b; a < n; a++) {
-        b = (sum - a) / (a + 1);
-        if (0 < b && b < n + 1 && b === ~~b) result.push([a, b]);
+    let possibilities = [];
+    const sum = n * (n + 1) / 2;
+    for (let x = Math.ceil(n / 2); x < n; ++x) {
+        let y = (sum - x) / (x + 1);
+        if (y === Math.floor(y)) {
+            possibilities.push([x, y]);
+        }
     }
-    return result;
+    return possibilities;
 }
 
 module.exports.main = main;
