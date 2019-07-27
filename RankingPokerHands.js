@@ -96,6 +96,38 @@ function main(string) {
             return rating;
         }
 
+        function getKindsRating(cards, ratingCount) {
+            let rating = {rating: 0, score: 0};
+            let result = {};
+            let target = 0;
+
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                result['' + card.strength] = result['' + card.strength] ? result['' + card.strength] + 1 : 1;
+                if (result['' + card.strength] === ratingCount) {
+                    target = card.strength;
+                    break
+                }
+            }
+
+            if (target) {
+                rating.score = target * ratingCount;
+                return rating;
+            } else {
+                return resetRating(rating);
+            }
+        }
+
+        function getSameStrengthCard(cards) {
+            let result = {};
+
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                result['' + card.strength] = result['' + card.strength] ? result['' + card.strength] + 1 : 1;
+            }
+            return result;
+        }
+
         function getRoyalFlashRating(cards) {
             let rating = {rating: 0, score: 0};
             if (cards[0].strength !== cardStrength.T) {
@@ -127,36 +159,16 @@ function main(string) {
         }
 
         function getFourOfKindRating(cards) {
-            let rating = {rating: 0, score: 0};
-            let result = {};
-            let target = 0;
-
-            for (let i = 0; i < cards.length; i++) {
-                const card = cards[i];
-                result['' + card.strength] = result['' + card.strength] ? result['' + card.strength] + 1 : 1;
-                if (result['' + card.strength] === 4) {
-                    target = card.strength;
-                    break
-                }
-            }
-
-            if (target) {
+            let rating = getKindsRating(cards, 4);
+            if (rating.score) {
                 rating.rating = ratingMap.FOUR_OF_KIND;
-                rating.score = target * 4;
-                return rating;
-            } else {
-                return resetRating(rating);
             }
+            return rating;
         }
 
         function getFullHouseRating(cards) {
             let rating = {rating: 0, score: 0};
-            let result = {};
-
-            for (let i = 0; i < cards.length; i++) {
-                const card = cards[i];
-                result['' + card.strength] = result['' + card.strength] ? result['' + card.strength] + 1 : 1;
-            }
+            let result = getSameStrengthCard(cards);
 
             const strengthKeys = Object.keys(result);
 
@@ -203,27 +215,66 @@ function main(string) {
             return rating;
         }
 
-        function getThreeOfKindRating(cards) {
-            let rating = {rating: 0, score: 0};
-            rating.rating = ratingMap.THREE_OF_KIND;
+        function getThreeOfKindRating(cards, ratingCount = 3) {
+            let rating = getKindsRating(cards, 3);
+            if (rating.score) {
+                rating.rating = ratingMap.THREE_OF_KIND;
+            }
             return rating;
         }
 
         function getTwoPairsRating(cards) {
             let rating = {rating: 0, score: 0};
-            rating.rating = ratingMap.TWO_PAIRS;
-            return rating;
+            let result = getSameStrengthCard(cards);
+
+            let strengthKeys = Object.keys(result);
+
+            if (strengthKeys.length === 3) {
+                for (let i = 0; i < strengthKeys.length; i++) {
+                    const strengthKey = strengthKeys[i];
+                    if (result[strengthKey] === 1) {
+                        delete result[strengthKey];
+                        break;
+                    }
+                }
+                strengthKeys = Object.keys(result);
+                rating.rating = ratingMap.TWO_PAIRS;
+                rating.score = strengthKeys[0] * result[strengthKeys[0]] + strengthKeys[1] * result[strengthKeys[1]];
+                return rating;
+            } else {
+                return resetRating(rating);
+            }
         }
 
         function getPairRating(cards) {
             let rating = {rating: 0, score: 0};
-            rating.rating = ratingMap.PAIR;
-            return rating;
+            let result = getSameStrengthCard(cards);
+
+            let strengthKeys = Object.keys(result);
+
+            if (strengthKeys.length === 4) {
+                let resultKey;
+                for (let i = 0; i < strengthKeys.length; i++) {
+                    const strengthKey = strengthKeys[i];
+                    if (result[strengthKey] === 2) {
+                        resultKey = strengthKey;
+                        break;
+                    }
+                }
+
+                rating.rating = ratingMap.PAIR;
+                rating.score = resultKey * 2;
+                return rating;
+            } else {
+                return resetRating(rating);
+            }
         }
 
         function getHighCardRating(cards) {
             let rating = {rating: 0, score: 0};
+
             rating.rating = ratingMap.HIGH_CARD;
+            rating.score = cards[cards.length - 1].strength;
             return rating;
         }
 
