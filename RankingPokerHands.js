@@ -283,10 +283,8 @@ function main(string) {
     }
 
     PokerHand.prototype.compareWith = function (hand) {
-        const secondCards = {};
-        secondCards.rating = hand.cards.rating;
         const first = this.cards.rating;
-        const second = secondCards.rating;
+        const second = hand.cards.rating;
         if (first.rating > second.rating) {
             return Result.win;
         } else if (first.rating < second.rating) {
