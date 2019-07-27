@@ -42,7 +42,7 @@ function main(string) {
             return 0;
         }
 
-        function stringToCardsArray(hand) {
+        this.stringToCardsArray = (hand) => {
             const strings = hand.toUpperCase().split(' ');
             const cards = [];
             for (let i = 0; i < strings.length; i++) {
@@ -51,7 +51,7 @@ function main(string) {
             }
             cards.sort(compare.bind(this));
             return cards;
-        }
+        };
 
         function stringToCard(strCard) {
             const cardParts = strCard.split('');
@@ -61,7 +61,7 @@ function main(string) {
             };
         }
 
-        function calculateRating(cards) {
+        this.calculateRating = (cards) => {
             let rating = {rating: 0, score: 0};
             switch (true) {
                 case (rating = getRoyalFlashRating(cards)).rating > 0:
@@ -88,7 +88,7 @@ function main(string) {
                     break;
             }
             return rating;
-        }
+        };
 
         function resetRating(rating) {
             rating.rating = 0;
@@ -278,20 +278,64 @@ function main(string) {
             return rating;
         }
 
-        this.cards.array = stringToCardsArray(hand);
-        this.cards.rating = calculateRating(this.cards.array);
+        this.cards.array = this.stringToCardsArray(hand);
+        this.cards.rating = this.calculateRating(this.cards.array);
     }
 
     PokerHand.prototype.compareWith = function (hand) {
-        return Result.tie;
+        const secondCards = {};
+        secondCards.rating = hand.cards.rating;
+        const first = this.cards.rating;
+        const second = secondCards.rating;
+        if (first.rating > second.rating) {
+            return Result.win;
+        } else if (first.rating < second.rating) {
+            return Result.loss;
+        } else {
+            if (first.score > second.score) {
+                return Result.win;
+            } else if (first.score < second.score) {
+                return Result.loss;
+            } else {
+                let firstScore = 0;
+                let secondScore = 0;
+                const firstArray = this.cards.array;
+                const secondArray = hand.cards.array;
+                for (let i = 0; i < firstArray.length; i++) {
+                    firstScore += firstArray[i].strength;
+                    secondScore += secondArray[i].strength;
+                }
+                if (firstScore > secondScore) {
+                    return Result.win;
+                } else if (firstScore < secondScore) {
+                    return Result.loss;
+                } else {
+                    return Result.tie;
+                }
+            }
+        }
     };
 
-    const hand = new PokerHand(string);
-    return JSON.stringify(hand.cards);
+    const hand1 = new PokerHand(string[0]);
+    const hand2 = new PokerHand(string[1]);
+
+    let compareResult = hand1.compareWith(hand2);
+    switch (compareResult) {
+        case 1:
+            compareResult = 'win';
+            break;
+        case 2:
+            compareResult = 'loss';
+            break;
+        case 3:
+            compareResult = 'tie';
+            break;
+    }
+    return compareResult;
 }
 
 function example(string) {
-    return '2';
+    return 'undefined';
 }
 
 module.exports.main = main;
