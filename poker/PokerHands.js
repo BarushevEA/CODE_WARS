@@ -29,7 +29,9 @@ function PokerHand(hand) {
             HIGH_CARD: 1
         };
 
-    this.cards = {rating: {rating: 0, score: 0}, array: null};
+    let searchResult = null;
+    let rating = {rating: 0, score: 0};
+    this.cards = {rating: rating, array: null};
 
     function compare(a, b) {
         if (a.strength < b.strength) {
@@ -45,8 +47,7 @@ function PokerHand(hand) {
         const strings = hand.toUpperCase().split(' ');
         const cards = [];
         for (let i = 0; i < strings.length; i++) {
-            const strCard = strings[i];
-            cards.push(stringToCard(strCard));
+            cards.push(stringToCard(strings[i]));
         }
         cards.sort(compare.bind(this));
         return cards;
@@ -61,7 +62,6 @@ function PokerHand(hand) {
     }
 
     this.calculateRating = (cards) => {
-        let rating = {rating: 0, score: 0};
         switch (true) {
             case (rating = getRoyalFlashRating(cards)).rating > 0:
                 break;
@@ -96,39 +96,33 @@ function PokerHand(hand) {
     }
 
     function getKindsRating(cards, ratingCount) {
-        let rating = {rating: 0, score: 0};
-        let result = {};
-        let target = 0;
+        searchResult = {};
+        resetRating(rating);
 
         for (let i = 0; i < cards.length; i++) {
             const card = cards[i];
-            result['' + card.strength] = result['' + card.strength] ? result['' + card.strength] + 1 : 1;
-            if (result['' + card.strength] === ratingCount) {
-                target = card.strength;
+            searchResult[card.strength] = searchResult[card.strength] ? searchResult[card.strength] + 1 : 1;
+            if (searchResult[card.strength] === ratingCount) {
+                rating.score = card.strength;
+                rating.score *= ratingCount;
                 break
             }
         }
 
-        if (target) {
-            rating.score = target * ratingCount;
-            return rating;
-        } else {
-            return resetRating(rating);
-        }
+        return rating;
     }
 
     function getSameStrengthCard(cards) {
-        let result = {};
-
+        searchResult = {};
         for (let i = 0; i < cards.length; i++) {
             const card = cards[i];
-            result['' + card.strength] = result['' + card.strength] ? result['' + card.strength] + 1 : 1;
+            searchResult[card.strength] = searchResult[card.strength] ? searchResult[card.strength] + 1 : 1;
         }
-        return result;
+        return searchResult;
     }
 
     function getRoyalFlashRating(cards) {
-        let rating = {rating: 0, score: 0};
+        resetRating(rating);
         if (cards[0].strength !== cardStrength.T) {
             return rating;
         }
@@ -143,7 +137,7 @@ function PokerHand(hand) {
 
 
     function getStraightFlashRating(cards) {
-        let rating = {rating: 0, score: 0};
+        resetRating(rating);
 
         rating.score = cards[0].strength;
         for (let i = 1; i < cards.length; i++) {
@@ -169,7 +163,7 @@ function PokerHand(hand) {
     }
 
     function getFullHouseRating(cards) {
-        let rating = {rating: 0, score: 0};
+        resetRating(rating);
         let result = getSameStrengthCard(cards);
 
         const strengthKeys = Object.keys(result);
@@ -184,7 +178,7 @@ function PokerHand(hand) {
     }
 
     function getFlashRating(cards) {
-        let rating = {rating: 0, score: 0};
+        resetRating(rating);
 
         rating.score = cards[0].strength;
         for (let i = 1; i < cards.length; i++) {
@@ -201,7 +195,7 @@ function PokerHand(hand) {
     }
 
     function getStraightRating(cards) {
-        let rating = {rating: 0, score: 0};
+        resetRating(rating);
 
         rating.score = cards[0].strength;
         for (let i = 1; i < cards.length; i++) {
@@ -226,7 +220,7 @@ function PokerHand(hand) {
     }
 
     function getTwoPairsRating(cards) {
-        let rating = {rating: 0, score: 0};
+        resetRating(rating);
         let result = getSameStrengthCard(cards);
 
         let strengthKeys = Object.keys(result);
@@ -249,7 +243,7 @@ function PokerHand(hand) {
     }
 
     function getPairRating(cards) {
-        let rating = {rating: 0, score: 0};
+        resetRating(rating);
         let result = getSameStrengthCard(cards);
 
         let strengthKeys = Object.keys(result);
@@ -273,7 +267,7 @@ function PokerHand(hand) {
     }
 
     function getHighCardRating(cards) {
-        let rating = {rating: 0, score: 0};
+        resetRating(rating);
 
         rating.rating = ratingMap.HIGH_CARD;
         rating.score = cards[cards.length - 1].strength;
