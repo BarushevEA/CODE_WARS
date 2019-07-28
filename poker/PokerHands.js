@@ -279,14 +279,12 @@ PokerHand.prototype.compareWith = function (hand) {
         } else if (first.score < second.score) {
             return Result.loss;
         } else {
-            let firstScore = 0;
-            let secondScore = 0;
             const firstArray = this.cards.array;
             const secondArray = hand.cards.array;
             let calcScore = 0;
-            for (let i = 0; i < 5; i++) {
-                firstScore = firstArray[4 - i].strength;
-                secondScore = secondArray[4 - i].strength;
+            for (let i = 4; i > -1; i--) {
+                const firstScore = firstArray[i].strength;
+                const secondScore = secondArray[i].strength;
                 calcScore = firstScore - secondScore;
                 if (calcScore !== 0) {
                     break;
