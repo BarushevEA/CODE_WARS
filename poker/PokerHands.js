@@ -29,16 +29,20 @@ function PokerHand(hand) {
             HIGH_CARD: 1
         };
 
-    let searchResult = null;
+    let searched = null;
     let rating = {rating: 0, score: 0};
     this.cards = {rating: rating, array: null};
 
     this.stringToCardsArray = (hand) => {
         const strings = hand.toUpperCase().split(' ');
         const cards = [];
-        for (let i = 0; i < strings.length; i++) {
-            cards.push(stringToCard(strings[i]));
-        }
+
+        cards.push(stringToCard(strings[0]));
+        cards.push(stringToCard(strings[1]));
+        cards.push(stringToCard(strings[2]));
+        cards.push(stringToCard(strings[3]));
+        cards.push(stringToCard(strings[4]));
+
         cards.sort((a, b) => a.strength - b.strength);
         return cards;
     };
@@ -86,13 +90,13 @@ function PokerHand(hand) {
     }
 
     function getKindsRating(cards, ratingCount) {
-        searchResult = {};
+        searched = {};
         resetRating(rating);
 
-        for (let i = 0; i < cards.length; i++) {
+        for (let i = 0; i < 5; i++) {
             const strength = cards[i].strength;
-            searchResult[strength] = searchResult[strength] ? searchResult[strength] + 1 : 1;
-            if (searchResult[strength] === ratingCount) {
+            searched[strength] = searched[strength] ? searched[strength] + 1 : 1;
+            if (searched[strength] === ratingCount) {
                 rating.score = strength;
                 rating.score *= ratingCount;
                 break
@@ -103,12 +107,13 @@ function PokerHand(hand) {
     }
 
     function getSameStrengthCard(cards) {
-        searchResult = {};
-        for (let i = 0; i < cards.length; i++) {
-            const strength = cards[i].strength;
-            searchResult[strength] = searchResult[strength] ? searchResult[strength] + 1 : 1;
-        }
-        return searchResult;
+        searched = {};
+        searched[cards[0].strength] = searched[cards[0].strength] ? searched[cards[0].strength] + 1 : 1;
+        searched[cards[1].strength] = searched[cards[1].strength] ? searched[cards[1].strength] + 1 : 1;
+        searched[cards[2].strength] = searched[cards[2].strength] ? searched[cards[2].strength] + 1 : 1;
+        searched[cards[3].strength] = searched[cards[3].strength] ? searched[cards[3].strength] + 1 : 1;
+        searched[cards[4].strength] = searched[cards[4].strength] ? searched[cards[4].strength] + 1 : 1;
+        return searched;
     }
 
     function getRoyalFlashRating(cards) {
@@ -130,7 +135,7 @@ function PokerHand(hand) {
         resetRating(rating);
 
         rating.score = cards[0].strength;
-        for (let i = 1; i < cards.length; i++) {
+        for (let i = 1; i < 5; i++) {
             const card = cards[i];
             const previewCard = cards[i - 1];
             if ((card.strength - previewCard.strength === 1) && (card.cardSuit === previewCard.cardSuit)) {
@@ -171,7 +176,7 @@ function PokerHand(hand) {
         resetRating(rating);
 
         rating.score = cards[0].strength;
-        for (let i = 1; i < cards.length; i++) {
+        for (let i = 1; i < 5; i++) {
             const card = cards[i];
             const previewCard = cards[i - 1];
             if (card.cardSuit !== previewCard.cardSuit) {
@@ -188,7 +193,7 @@ function PokerHand(hand) {
         resetRating(rating);
 
         rating.score = cards[0].strength;
-        for (let i = 1; i < cards.length; i++) {
+        for (let i = 1; i < 5; i++) {
             const strength = cards[i].strength;
             const previewStrength = cards[i - 1].strength;
             if (strength - previewStrength !== 1) {
@@ -285,11 +290,10 @@ PokerHand.prototype.compareWith = function (hand) {
             let secondScore = 0;
             const firstArray = this.cards.array;
             const secondArray = hand.cards.array;
-            const length = firstArray.length;
             let calcScore = 0;
-            for (let i = 0; i < length; i++) {
-                firstScore = firstArray[length - 1 - i].strength;
-                secondScore = secondArray[length - 1 - i].strength;
+            for (let i = 0; i < 5; i++) {
+                firstScore = firstArray[4 - i].strength;
+                secondScore = secondArray[4 - i].strength;
                 calcScore = firstScore - secondScore;
                 if (calcScore !== 0) {
                     break;
