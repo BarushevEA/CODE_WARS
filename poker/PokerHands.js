@@ -48,10 +48,9 @@ function PokerHand(hand) {
     };
 
     function stringToCard(strCard) {
-        const cardParts = strCard.split('');
         return {
-            strength: cardStrength[cardParts[0]],
-            cardSuit: cardParts[1]
+            strength: cardStrength[strCard[0]],
+            cardSuit: strCard[1]
         };
     }
 
