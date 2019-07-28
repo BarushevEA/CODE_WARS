@@ -122,6 +122,7 @@ describe("Randomized tests", function () {
                         break;
                 }
                 console.log('hand', 'handOpponent', `'${hands[index]}',`, `'${hands[opponentIndex]}'`, compareResult);
+                throw(e);
             }
         }
     });
