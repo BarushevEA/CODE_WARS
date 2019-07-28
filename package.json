@@ -1,0 +1,22 @@
+{
+  "name": "code_wars",
+  "version": "1.0.0",
+  "description": "",
+  "main": "MovingZerosToTheEnd.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BarushevEA/CODE_WARS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BarushevEA/CODE_WARS/issues"
+  },
+  "homepage": "https://github.com/BarushevEA/CODE_WARS#readme",
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  }
+}
