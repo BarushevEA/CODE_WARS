@@ -33,23 +33,13 @@ function PokerHand(hand) {
     let rating = {rating: 0, score: 0};
     this.cards = {rating: rating, array: null};
 
-    function compare(a, b) {
-        if (a.strength < b.strength) {
-            return -1;
-        }
-        if (a.strength > b.strength) {
-            return 1;
-        }
-        return 0;
-    }
-
     this.stringToCardsArray = (hand) => {
         const strings = hand.toUpperCase().split(' ');
         const cards = [];
         for (let i = 0; i < strings.length; i++) {
             cards.push(stringToCard(strings[i]));
         }
-        cards.sort(compare.bind(this));
+        cards.sort((a, b) => a.strength - b.strength);
         return cards;
     };
 
