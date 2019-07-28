@@ -304,8 +304,8 @@ PokerHand.prototype.compareWith = function (hand) {
             const length = firstArray.length;
             let calcScore = 0;
             for (let i = 0; i < length; i++) {
-                firstScore = firstArray.pop().strength;
-                secondScore = secondArray.pop().strength;
+                firstScore = firstArray[length - 1 - i].strength;
+                secondScore = secondArray[length - 1 - i].strength;
                 calcScore = firstScore - secondScore;
                 if (calcScore !== 0) {
                     break;
