@@ -90,10 +90,10 @@ function PokerHand(hand) {
         resetRating(rating);
 
         for (let i = 0; i < cards.length; i++) {
-            const card = cards[i];
-            searchResult[card.strength] = searchResult[card.strength] ? searchResult[card.strength] + 1 : 1;
-            if (searchResult[card.strength] === ratingCount) {
-                rating.score = card.strength;
+            const strength = cards[i].strength;
+            searchResult[strength] = searchResult[strength] ? searchResult[strength] + 1 : 1;
+            if (searchResult[strength] === ratingCount) {
+                rating.score = strength;
                 rating.score *= ratingCount;
                 break
             }
@@ -105,8 +105,8 @@ function PokerHand(hand) {
     function getSameStrengthCard(cards) {
         searchResult = {};
         for (let i = 0; i < cards.length; i++) {
-            const card = cards[i];
-            searchResult[card.strength] = searchResult[card.strength] ? searchResult[card.strength] + 1 : 1;
+            const strength = cards[i].strength;
+            searchResult[strength] = searchResult[strength] ? searchResult[strength] + 1 : 1;
         }
         return searchResult;
     }
@@ -189,12 +189,12 @@ function PokerHand(hand) {
 
         rating.score = cards[0].strength;
         for (let i = 1; i < cards.length; i++) {
-            const card = cards[i];
-            const previewCard = cards[i - 1];
-            if (card.strength - previewCard.strength !== 1) {
+            const strength = cards[i].strength;
+            const previewStrength = cards[i - 1].strength;
+            if (strength - previewStrength !== 1) {
                 return resetRating(rating);
             }
-            rating.score += card.strength;
+            rating.score += strength;
         }
 
         rating.rating = ratingMap.STRAIGHT;
@@ -216,7 +216,7 @@ function PokerHand(hand) {
         let strengthKeys = Object.keys(result);
 
         if (strengthKeys.length === 3) {
-            for (let i = 0; i < strengthKeys.length; i++) {
+            for (let i = 0; i < 3; i++) {
                 const strengthKey = strengthKeys[i];
                 if (result[strengthKey] === 1) {
                     delete result[strengthKey];
@@ -240,7 +240,7 @@ function PokerHand(hand) {
 
         if (strengthKeys.length === 4) {
             let resultKey;
-            for (let i = 0; i < strengthKeys.length; i++) {
+            for (let i = 0; i < 4; i++) {
                 const strengthKey = strengthKeys[i];
                 if (result[strengthKey] === 2) {
                     resultKey = strengthKey;
