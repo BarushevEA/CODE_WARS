@@ -163,7 +163,7 @@ function PokerHand(hand) {
             rating.score = strengthKeys[0] * result[strengthKeys[0]] + strengthKeys[1] * result[strengthKeys[1]];
             return rating;
         } else {
-            return resetRating(rating);
+            return rating;
         }
     }
 
@@ -228,7 +228,7 @@ function PokerHand(hand) {
             rating.score = strengthKeys[0] * result[strengthKeys[0]] + strengthKeys[1] * result[strengthKeys[1]];
             return rating;
         } else {
-            return resetRating(rating);
+            return rating;
         }
     }
 
@@ -252,7 +252,7 @@ function PokerHand(hand) {
             rating.score = resultKey * 2;
             return rating;
         } else {
-            return resetRating(rating);
+            return rating;
         }
     }
 
