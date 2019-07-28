@@ -47,14 +47,15 @@ const Result = {
         return searched;
     },
     stringToCardsArray = (hand) => {
-        const strings = hand.toUpperCase().split(' ');
-        const cards = [];
-
-        cards.push({strength: cardStrength[strings[0][0]], cardSuit: strings[0][1]});
-        cards.push({strength: cardStrength[strings[1][0]], cardSuit: strings[1][1]});
-        cards.push({strength: cardStrength[strings[2][0]], cardSuit: strings[2][1]});
-        cards.push({strength: cardStrength[strings[3][0]], cardSuit: strings[3][1]});
-        cards.push({strength: cardStrength[strings[4][0]], cardSuit: strings[4][1]});
+        const
+            strings = hand.toUpperCase().split(' '),
+            cards = [
+                {strength: cardStrength[strings[0][0]], cardSuit: strings[0][1]},
+                {strength: cardStrength[strings[1][0]], cardSuit: strings[1][1]},
+                {strength: cardStrength[strings[2][0]], cardSuit: strings[2][1]},
+                {strength: cardStrength[strings[3][0]], cardSuit: strings[3][1]},
+                {strength: cardStrength[strings[4][0]], cardSuit: strings[4][1]}
+            ];
 
         cards.sort((a, b) => a.strength - b.strength);
         return cards;
@@ -153,11 +154,11 @@ function PokerHand(hand) {
         resetRating(rating);
         let result = getSameStrengthCard(cards);
 
-        const strengthKeys = Object.keys(result);
+        const keys = Object.keys(result);
 
-        if (strengthKeys.length === 2) {
+        if (keys.length === 2) {
             rating.rating = ratingMap.FULL_HOUSE;
-            rating.score = strengthKeys[0] * result[strengthKeys[0]] + strengthKeys[1] * result[strengthKeys[1]];
+            rating.score = keys[0] * result[keys[0]] + keys[1] * result[keys[1]];
             return rating;
         } else {
             return rating;
