@@ -1,58 +1,71 @@
-const Result = {"win": 1, "loss": 2, "tie": 3};
+const Result = {
+        "win": 1,
+        "loss": 2,
+        "tie": 3
+    },
+    cardStrength = {
+        '2': 1,
+        '3': 2,
+        '4': 3,
+        '5': 4,
+        '6': 5,
+        '7': 6,
+        '8': 7,
+        '9': 8,
+        'T': 9,
+        'J': 10,
+        'Q': 11,
+        'K': 12,
+        'A': 13
+    },
+    ratingMap = {
+        ROYAL_FLUSH: 10,
+        STRAIGHT_FLUSH: 9,
+        FOUR_OF_KIND: 8,
+        FULL_HOUSE: 7,
+        FLUSH: 6,
+        STRAIGHT: 5,
+        THREE_OF_KIND: 4,
+        TWO_PAIRS: 3,
+        PAIR: 2,
+        HIGH_CARD: 1
+    };
+let searched = null;
+
+function resetRating(rating) {
+    rating.rating = 0;
+    rating.score = 0;
+    return rating;
+}
+
+function getSameStrengthCard(cards) {
+    searched = {};
+    searched[cards[0].strength] = searched[cards[0].strength] ? searched[cards[0].strength] + 1 : 1;
+    searched[cards[1].strength] = searched[cards[1].strength] ? searched[cards[1].strength] + 1 : 1;
+    searched[cards[2].strength] = searched[cards[2].strength] ? searched[cards[2].strength] + 1 : 1;
+    searched[cards[3].strength] = searched[cards[3].strength] ? searched[cards[3].strength] + 1 : 1;
+    searched[cards[4].strength] = searched[cards[4].strength] ? searched[cards[4].strength] + 1 : 1;
+    return searched;
+}
 
 function PokerHand(hand) {
-    const cardStrength = {
-            '2': 1,
-            '3': 2,
-            '4': 3,
-            '5': 4,
-            '6': 5,
-            '7': 6,
-            '8': 7,
-            '9': 8,
-            'T': 9,
-            'J': 10,
-            'Q': 11,
-            'K': 12,
-            'A': 13
-        },
-        ratingMap = {
-            ROYAL_FLUSH: 10,
-            STRAIGHT_FLUSH: 9,
-            FOUR_OF_KIND: 8,
-            FULL_HOUSE: 7,
-            FLUSH: 6,
-            STRAIGHT: 5,
-            THREE_OF_KIND: 4,
-            TWO_PAIRS: 3,
-            PAIR: 2,
-            HIGH_CARD: 1
-        };
-
-    let searched = null;
     let rating = {rating: 0, score: 0};
     this.cards = {rating: rating, array: null};
+
 
     this.stringToCardsArray = (hand) => {
         const strings = hand.toUpperCase().split(' ');
         const cards = [];
 
-        cards.push(stringToCard(strings[0]));
-        cards.push(stringToCard(strings[1]));
-        cards.push(stringToCard(strings[2]));
-        cards.push(stringToCard(strings[3]));
-        cards.push(stringToCard(strings[4]));
+        cards.push({strength: cardStrength[strings[0][0]], cardSuit: strings[0][1]});
+        cards.push({strength: cardStrength[strings[1][0]], cardSuit: strings[1][1]});
+        cards.push({strength: cardStrength[strings[2][0]], cardSuit: strings[2][1]});
+        cards.push({strength: cardStrength[strings[3][0]], cardSuit: strings[3][1]});
+        cards.push({strength: cardStrength[strings[4][0]], cardSuit: strings[4][1]});
 
         cards.sort((a, b) => a.strength - b.strength);
         return cards;
     };
-
-    function stringToCard(strCard) {
-        return {
-            strength: cardStrength[strCard[0]],
-            cardSuit: strCard[1]
-        };
-    }
 
     this.calculateRating = (cards) => {
         switch (true) {
@@ -82,12 +95,6 @@ function PokerHand(hand) {
         return rating;
     };
 
-    function resetRating(rating) {
-        rating.rating = 0;
-        rating.score = 0;
-        return rating;
-    }
-
     function getKindsRating(cards, ratingCount) {
         searched = {};
         resetRating(rating);
@@ -103,16 +110,6 @@ function PokerHand(hand) {
         }
 
         return rating;
-    }
-
-    function getSameStrengthCard(cards) {
-        searched = {};
-        searched[cards[0].strength] = searched[cards[0].strength] ? searched[cards[0].strength] + 1 : 1;
-        searched[cards[1].strength] = searched[cards[1].strength] ? searched[cards[1].strength] + 1 : 1;
-        searched[cards[2].strength] = searched[cards[2].strength] ? searched[cards[2].strength] + 1 : 1;
-        searched[cards[3].strength] = searched[cards[3].strength] ? searched[cards[3].strength] + 1 : 1;
-        searched[cards[4].strength] = searched[cards[4].strength] ? searched[cards[4].strength] + 1 : 1;
-        return searched;
     }
 
     function getRoyalFlashRating(cards) {
