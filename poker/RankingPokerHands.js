@@ -1,9 +1,9 @@
-const {PokerHand} = require('./PokerHands');
-const outExample = require('./OUT_EXAMPLE');
+const example1 = require('./PokerHands');
+const example2 = require('./OUT_EXAMPLE');
 
 function main(string) {
-    const hand1 = new PokerHand(string[0]);
-    const hand2 = new PokerHand(string[1]);
+    const hand1 = new example1.PokerHand(string[0]);
+    const hand2 = new example1.PokerHand(string[1]);
 
     let compareResult = hand1.compareWith(hand2);
     switch (compareResult) {
@@ -21,8 +21,8 @@ function main(string) {
 }
 
 function example(string) {
-    const hand1 = new outExample.PokerHand(string[0]);
-    const hand2 = new outExample.PokerHand(string[1]);
+    const hand1 = new example2.PokerHand(string[0]);
+    const hand2 = new example2.PokerHand(string[1]);
 
     let compareResult = hand1.compareWith(hand2);
     switch (compareResult) {

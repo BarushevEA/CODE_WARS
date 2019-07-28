@@ -10,8 +10,9 @@ function execute(cb, name, arg, count) {
 
 function calculate(cb, name, arg, count = 5000000) {
     console.log(`================> ${name}`);
-    execute(cb.main, `main`, arg, count);
     execute(cb.example, `example`, arg, count);
+    execute(cb.main, `main`, arg, count);
+    console.log('.................');
     console.log();
 }
 
