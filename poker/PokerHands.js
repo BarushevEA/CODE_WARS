@@ -117,7 +117,6 @@ function PokerHand(hand) {
         return rating;
     }
 
-
     function getStraightFlashRating(cards) {
         resetRating(rating);
         rating.score = cards[0].strength;
