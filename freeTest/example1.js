@@ -14,7 +14,7 @@ const switcher = {
 function execute(str) {
     const res = switcher[str];
     if (res) {
-        return res(str);
+        return res('a1 ' + str);
     }
     return 'unknown';
 }

@@ -35,7 +35,7 @@ function execute(str) {
             res = (str) => 'unknown';
             break;
     }
-    return res(str);
+    return res('a2 ' + str);
 }
 
 module.exports.execute = execute;
