@@ -28,6 +28,6 @@ const freeTest = require('../freeTest/examplesPool');
 // exec.execute(RankingPokerHands, 'RankingPokerHands', ["4S 5H 6H TS AC", "3S 5H 6H TS AC"], 100000);
 // exec.execute(RankingPokerHands, 'RankingPokerHands', ["2S AH 4H 5S 6C", "AD 4C 5H 6H 2C"], 100000);
 
+// exec.execute(freeTest, 'freeTest', 'no name', 10000000);
 exec.execute(freeTest, 'freeTest', 'a', 10000000);
 exec.execute(freeTest, 'freeTest', 'l', 10000000);
-exec.execute(freeTest, 'freeTest', 'no name', 10000000);
